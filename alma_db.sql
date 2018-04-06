@@ -1,0 +1,385 @@
+# noinspection SqlNoDataSourceInspectionForFile
+DROP TABLE IF EXISTS `RoomChangeApp`;
+DROP TABLE IF EXISTS `StudentRoom`;
+DROP TABLE IF EXISTS `Room`;
+DROP TABLE IF EXISTS `Hostel`;
+DROP TABLE IF EXISTS `QuestionFromStudent`;
+DROP TABLE IF EXISTS `StudentsApplied`;
+DROP TABLE IF EXISTS `Status`;
+DROP TABLE IF EXISTS `Vacancy`;
+DROP TABLE IF EXISTS `QualificationProgramSkill`;
+DROP TABLE IF EXISTS `QualificationProgram`;
+DROP TABLE IF EXISTS `DisciplineSkill`;
+DROP TABLE IF EXISTS `Skill`;
+DROP TABLE IF EXISTS `TeacherClass`;
+DROP TABLE IF EXISTS `Grade`;
+DROP TABLE IF EXISTS `Class`;
+DROP TABLE IF EXISTS `ClassType`;
+DROP TABLE IF EXISTS `Review`;
+DROP TABLE IF EXISTS `Discipline`;
+DROP TABLE IF EXISTS `Specialty`;
+DROP TABLE IF EXISTS `ApplicantsApplication`;
+DROP TABLE IF EXISTS `ErrorReport`;
+DROP TABLE IF EXISTS `News`;
+DROP TABLE IF EXISTS `HousingWorker`;
+DROP TABLE IF EXISTS `Agent`;
+DROP TABLE IF EXISTS `Teacher`;
+DROP TABLE IF EXISTS `Student`;
+DROP TABLE IF EXISTS `User`;
+DROP TABLE IF EXISTS `Role`;
+DROP TABLE IF EXISTS `Faculty`;
+
+
+
+CREATE TABLE IF NOT EXISTS `Faculty` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Role` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `role` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `Role` (`id`, `role`) VALUES (1, 'ADMIN'), (2, 'STUDENT'), (3, 'TEACHER'), (4, 'AGENT'), (5, 'WORKER');
+
+CREATE TABLE IF NOT EXISTS `User` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `email` VARCHAR(256) NOT NULL UNIQUE,
+  `password` VARCHAR(256) NOT NULL,
+  `firstname` VARCHAR(256) NOT NULL,
+  `patronymic` VARCHAR(256),
+  `lastname` VARCHAR(256) NOT NULL,
+  `phone` VARCHAR(256) NOT NULL,
+  `roleId` INT(11) NOT NULL,
+  FOREIGN KEY (`roleId`) REFERENCES `Role`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `User` (`id`, `email`, `password`, `firstname`, `patronymic`, `lastname`, `phone`, `roleId`)
+              VALUES (1, 'ADMIN', '202cb962ac59075b964b07152d234b70', 'ADMIN', 'ADMIN', 'ADMIN', '88005553535', 1);
+
+CREATE TABLE IF NOT EXISTS `Student` (
+  `id` INT(11) NOT NULL,
+  `dateOfBirth` DATE NOT NULL,
+  `sex` TINYINT(1) NOT NULL,
+  `entryDate` DATE NOT NULL,
+  `course` INT(11) NOT NULL,
+  `facultyId` INT(11) NOT NULL,
+  `userId` INT(11) NOT NULL,
+  FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Teacher` (
+  `id` INT(11) NOT NULL,
+  `hoursForConsultations` VARCHAR(256) NOT NULL,
+  `facultyId` INT(11) NOT NULL,
+  `userId` INT(11) NOT NULL,
+  FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Agent` (
+  `id` INT(11) NOT NULL,
+  `company` VARCHAR(256) NOT NULL,
+  `description` TEXT NOT NULL,
+  `userId` INT(11) NOT NULL,
+  FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `HousingWorker` (
+  `id` INT(11) NOT NULL,
+  `workingTime` VARCHAR(256) NOT NULL,
+  `userId` INT(11) NOT NULL,
+  FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `News` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `title` VARCHAR(256) NOT NULL,
+  `text` TEXT NOT NULL,
+  `date` DATE NOT NULL,
+  `forRole` INT(11) NULL,
+  `forFaculty` INT(11) NULL,
+  `postedBy` INT(11) NOT NULL,
+  FOREIGN KEY (`forRole`) REFERENCES `Role`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`forFaculty`) REFERENCES `Faculty`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`postedBy`) REFERENCES `User`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ErrorReport` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `text` TEXT NOT NULL,
+  `authorName` VARCHAR(256) NOT NULL,
+  `email` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ApplicantsApplication` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `title` VARCHAR(256) NOT NULL,
+  `text` TEXT NOT NULL,
+  `authorName` VARCHAR(256) NOT NULL,
+  `email` VARCHAR(256) NOT NULL,
+  `facultyId` INT(11) NOT NULL,
+  FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Specialty` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(256) NOT NULL,
+  `facultyId` INT(11) NOT NULL,
+  FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Discipline` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(256) NOT NULL,
+  `specialtyId` INT(11) NOT NULL,
+  FOREIGN KEY (`specialtyId`) REFERENCES `Specialty`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Review` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `strnghts` TEXT NOT NULL,
+  `weaknesses` TEXT NOT NULL,
+  `studentId` INT(11) NOT NULL,
+  `disciplineId` INT(11) NOT NULL,
+  FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`disciplineId`) REFERENCES `Discipline`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ClassType` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `type` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `ClassType` (`id`, `type`) VALUES (1, 'Lection'), (2, 'Practise'), (3, 'Exam'), (4, 'Test');
+
+CREATE TABLE IF NOT EXISTS `Class` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `disciplineId` INT(11) NOT NULL,
+  `classTypeId` INT(11) NOT NULL,
+  `info` TEXT,
+  `date` DATE NOT NULL,
+  FOREIGN KEY (`disciplineId`) REFERENCES `Discipline`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`classTypeId`) REFERENCES `ClassType`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Grade` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `presence` TINYINT(1) NOT NULL,
+  `mark` INT(11) NOT NULL,
+  `studentId` INT(11) NOT NULL,
+  `classId` INT(11) NOT NULL,
+  FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`classId`) REFERENCES `Class`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `TeacherClass` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `teacherId` INT(11) NOT NULL,
+  `classId` INT(11) NOT NULL,
+  FOREIGN KEY (`teacherId`) REFERENCES `Teacher`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`classId`) REFERENCES `Class`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Skill` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(256) NOT NULL,
+  `description` TEXT NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `DisciplineSkill` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `disciplineId` INT(11) NOT NULL,
+  `skillId` INT(11) NOT NULL,
+  FOREIGN KEY (`disciplineId`) REFERENCES `Discipline`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`skillId`) REFERENCES `Skill`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `QualificationProgram` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `name` VARCHAR(256) NOT NULL,
+  `description` TEXT NOT NULL,
+  `agentId` INT(11) NOT NULL,
+  FOREIGN KEY (`agentId`) REFERENCES `Agent`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `QualificationProgramSkill` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `qualificationProgramId` INT(11) NOT NULL,
+  `skillId` INT(11) NOT NULL,
+  FOREIGN KEY (`qualificationProgramId`) REFERENCES `QualificationProgram`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`skillId`) REFERENCES `Skill`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Vacancy` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `title` VARCHAR(256) NOT NULL,
+  `description` TEXT NOT NULL,
+  `endDate` DATE NOT NULL,
+  `agentId` INT(11) NOT NULL,
+  FOREIGN KEY (`agentId`) REFERENCES `Agent`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Status` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `status` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `Status` (`id`, `status`) VALUES (1, 'NEW'), (2, 'archived');
+
+CREATE TABLE IF NOT EXISTS `StudentsApplied` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `resume` MEDIUMBLOB,
+  `fileExtension` VARCHAR(256),
+  `studentId` INT(11) NOT NULL,
+  `vacancyId` INT(11) NOT NULL,
+  `statusId` INT(11) NOT NULL,
+  FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`vacancyId`) REFERENCES `Vacancy`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`statusId`) REFERENCES `Status`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `QuestionFromStudent` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `text` TEXT NOT NULL,
+  `studentId` INT(11) NOT NULL,
+  `statusId` INT(11) NOT NULL,
+  FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`statusId`) REFERENCES `Status`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Hostel` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `address` VARCHAR(256) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `Room` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `number` INT(11) NOT NULL,
+  `size` INT(11) NOT NULL,
+  `sex` TINYINT(1) NOT NULL,
+  `hostelId` INT(11) NOT NULL,
+  FOREIGN KEY (`hostelId`) REFERENCES `Hostel`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `StudentRoom` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `studentId` INT(11) NOT NULL,
+  `roomId` INT(11) NOT NULL,
+  FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`roomId`) REFERENCES `Room`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `RoomChangeApp` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `info` TEXT NOT NULL,
+  `studentId` INT(11) NOT NULL,
+  `wantedRoomId` INT(11) NOT NULL,
+  `statusId` INT(11) NOT NULL,
+  FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`wantedRoomId`) REFERENCES `Room`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`statusId`) REFERENCES `Status`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
