@@ -19,10 +19,10 @@ public class Skill {
     @Column(name="description")
     private String description;
 
-    @ManyToMany(mappedBy = "skills")
+    @ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
     private Collection<Discipline> disciplines;
 
-    @ManyToMany(mappedBy = "skills")
+    @ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
     private Collection<QualificationProgram> qualificationPrograms;
 
     public Skill(){}

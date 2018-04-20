@@ -18,17 +18,23 @@ public class Teacher {
 
     @ManyToOne
     @JoinColumn(name="facultyId", nullable=false)
-    private Faculty facultyByFacultyId;
+    private Faculty faculty;
 
     @ManyToOne
     @JoinColumn(name="userId", nullable=false)
-    private User userById;
+    private User user;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "teacherClass",
             joinColumns = { @JoinColumn(name = "teacherId") },
             inverseJoinColumns = { @JoinColumn(name = "classId") })
     private Collection<Clazz> classes;
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(name = "teacherDiscipline",
+            joinColumns = { @JoinColumn(name = "teacherId") },
+            inverseJoinColumns = { @JoinColumn(name = "disciplineId") })
+    private Collection<Discipline> disciplines;
 
     public Teacher(){}
 
@@ -48,20 +54,20 @@ public class Teacher {
         this.hoursForConsultations = hoursForConsultations;
     }
 
-    public Faculty getFacultyByFacultyId() {
-        return facultyByFacultyId;
+    public Faculty getFaculty() {
+        return faculty;
     }
 
-    public void setFacultyByFacultyId(Faculty facultyByFacultyId) {
-        this.facultyByFacultyId = facultyByFacultyId;
+    public void setFaculty(Faculty faculty) {
+        this.faculty = faculty;
     }
 
-    public User getUserById() {
-        return userById;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserById(User userById) {
-        this.userById = userById;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Collection<Clazz> getClasses() {
@@ -71,4 +77,8 @@ public class Teacher {
     public void setClasses(Collection<Clazz> classes) {
         this.classes = classes;
     }
+
+    public Collection<Discipline> getDisciplines() { return disciplines; }
+
+    public void setDisciplines(Collection<Discipline> disciplines) { this.disciplines = disciplines; }
 }

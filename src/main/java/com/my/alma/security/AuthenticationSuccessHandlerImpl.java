@@ -25,30 +25,30 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
 		switch(userAuth.getRole()) {
 		case "ADMIN":
 			session.setAttribute("id", userAuth.getId());
-			session.setAttribute("role", "ADMIN");
-			response.sendRedirect("admin");
+			session.setAttribute("role", userAuth.getRole());
+			response.sendRedirect("admin/main");
 			break;
 		case "STUDENT":
 			session.setAttribute("id", userAuth.getId());
-			session.setAttribute("role", "STUDENT");
-			response.sendRedirect("student");
+			session.setAttribute("role", userAuth.getRole());
+			response.sendRedirect("student/main");
 			break;
 		case "TEACHER":
 			session.setAttribute("id", userAuth.getId());
-			session.setAttribute("role", "TEACHER");
-			response.sendRedirect("teacher");
+			session.setAttribute("role", userAuth.getRole());
+			response.sendRedirect("teacher/main");
 			break;
 		case "AGENT":
 			session.setAttribute("id", userAuth.getId());
-			session.setAttribute("role", "AGENT");
-			response.sendRedirect("agent");
+			session.setAttribute("role", userAuth.getRole());
+			response.sendRedirect("agent/main");
 			break;
 		case "WORKER":
 			session.setAttribute("id", userAuth.getId());
-			session.setAttribute("role", "WORKER");
-			response.sendRedirect("worker");
+			session.setAttribute("role", userAuth.getRole());
+			response.sendRedirect("worker/main");
 			break;
+		default: response.sendRedirect("logout");
 		}	
 	}
-
 }

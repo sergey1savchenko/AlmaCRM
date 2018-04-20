@@ -12,6 +12,7 @@ DROP TABLE IF EXISTS `QualificationProgram`;
 DROP TABLE IF EXISTS `DisciplineSkill`;
 DROP TABLE IF EXISTS `Skill`;
 DROP TABLE IF EXISTS `TeacherClass`;
+DROP TABLE IF EXISTS `TeacherDiscipline`;
 DROP TABLE IF EXISTS `Grade`;
 DROP TABLE IF EXISTS `Class`;
 DROP TABLE IF EXISTS `ClassType`;
@@ -29,11 +30,9 @@ DROP TABLE IF EXISTS `User`;
 DROP TABLE IF EXISTS `Role`;
 DROP TABLE IF EXISTS `Faculty`;
 
-
-
 CREATE TABLE IF NOT EXISTS `Faculty` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
+  `name` VARCHAR(256) NOT NULL UNIQUE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -62,7 +61,7 @@ INSERT INTO `User` (`id`, `email`, `password`, `firstname`, `patronymic`, `lastn
               VALUES (1, 'ADMIN', '202cb962ac59075b964b07152d234b70', 'ADMIN', 'ADMIN', 'ADMIN', '88005553535', 1);
 
 CREATE TABLE IF NOT EXISTS `Student` (
-  `id` INT(11) NOT NULL,
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
   `dateOfBirth` DATE NOT NULL,
   `sex` TINYINT(1) NOT NULL,
   `entryDate` DATE NOT NULL,
@@ -79,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `Student` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Teacher` (
-  `id` INT(11) NOT NULL,
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
   `hoursForConsultations` VARCHAR(256) NOT NULL,
   `facultyId` INT(11) NOT NULL,
   `userId` INT(11) NOT NULL,
@@ -93,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `Teacher` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `Agent` (
-  `id` INT(11) NOT NULL,
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
   `company` VARCHAR(256) NOT NULL,
   `description` TEXT NOT NULL,
   `userId` INT(11) NOT NULL,
@@ -104,8 +103,7 @@ CREATE TABLE IF NOT EXISTS `Agent` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `HousingWorker` (
-  `id` INT(11) NOT NULL,
-  `workingTime` VARCHAR(256) NOT NULL,
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
   `userId` INT(11) NOT NULL,
   FOREIGN KEY (`userId`) REFERENCES `User`(`id`)
     ON UPDATE CASCADE
@@ -156,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `ApplicantsApplication` (
 
 CREATE TABLE IF NOT EXISTS `Specialty` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
+  `name` VARCHAR(256) NOT NULL UNIQUE,
   `facultyId` INT(11) NOT NULL,
   FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`)
     ON UPDATE CASCADE
@@ -166,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `Specialty` (
 
 CREATE TABLE IF NOT EXISTS `Discipline` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
+  `name` VARCHAR(256) NOT NULL UNIQUE,
   `specialtyId` INT(11) NOT NULL,
   FOREIGN KEY (`specialtyId`) REFERENCES `Specialty`(`id`)
     ON UPDATE CASCADE
@@ -191,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `Review` (
 
 CREATE TABLE IF NOT EXISTS `ClassType` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `type` VARCHAR(256) NOT NULL,
+  `type` VARCHAR(256) NOT NULL UNIQUE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 INSERT INTO `ClassType` (`id`, `type`) VALUES (1, 'Lection'), (2, 'Practise'), (3, 'Exam'), (4, 'Test');
@@ -226,6 +224,21 @@ CREATE TABLE IF NOT EXISTS `Grade` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+CREATE TABLE IF NOT EXISTS `TeacherDiscipline` (
+  `id` INT(11) AUTO_INCREMENT NOT NULL,
+  `teacherId` INT(11) NOT NULL,
+  `disciplineId` INT(11) NOT NULL,
+  FOREIGN KEY (`teacherId`) REFERENCES `Teacher`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`disciplineId`) REFERENCES `Discipline`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE teacherdiscipline
+  ADD CONSTRAINT teacherdisciplineCon UNIQUE(teacherId, disciplineId);
+
 CREATE TABLE IF NOT EXISTS `TeacherClass` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
   `teacherId` INT(11) NOT NULL,
@@ -241,7 +254,7 @@ CREATE TABLE IF NOT EXISTS `TeacherClass` (
 
 CREATE TABLE IF NOT EXISTS `Skill` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `name` VARCHAR(256) NOT NULL,
+  `name` VARCHAR(256) NOT NULL UNIQUE,
   `description` TEXT NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -258,6 +271,8 @@ CREATE TABLE IF NOT EXISTS `DisciplineSkill` (
     ON DELETE RESTRICT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE disciplineskill
+  ADD CONSTRAINT disciplineskillCon UNIQUE(disciplineId, skillId);
 
 CREATE TABLE IF NOT EXISTS `QualificationProgram` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
@@ -272,7 +287,7 @@ CREATE TABLE IF NOT EXISTS `QualificationProgram` (
 
 CREATE TABLE IF NOT EXISTS `QualificationProgramSkill` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `qualificationProgramId` INT(11) NOT NULL,
+  `qualificationProgramId` INT(11) NOT NULL UNIQUE,
   `skillId` INT(11) NOT NULL,
   FOREIGN KEY (`qualificationProgramId`) REFERENCES `QualificationProgram`(`id`)
     ON UPDATE CASCADE
@@ -282,6 +297,8 @@ CREATE TABLE IF NOT EXISTS `QualificationProgramSkill` (
     ON DELETE RESTRICT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE qualificationprogramskill
+  ADD CONSTRAINT qualificationprogramskillCon UNIQUE(qualificationProgramId, skillId);
 
 CREATE TABLE IF NOT EXISTS `Vacancy` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
@@ -337,7 +354,7 @@ CREATE TABLE IF NOT EXISTS `QuestionFromStudent` (
 
 CREATE TABLE IF NOT EXISTS `Hostel` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `address` VARCHAR(256) NOT NULL,
+  `address` VARCHAR(256) NOT NULL UNIQUE,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -365,6 +382,8 @@ CREATE TABLE IF NOT EXISTS `StudentRoom` (
     ON DELETE RESTRICT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE studentroom
+  ADD CONSTRAINT studentroomCon UNIQUE(studentId, roomId);
 
 CREATE TABLE IF NOT EXISTS `RoomChangeApp` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,

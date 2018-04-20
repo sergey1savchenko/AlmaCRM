@@ -23,7 +23,7 @@ public class Discipline {
     @OneToMany(mappedBy="discipline")
     private Collection<Clazz> classes;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "disciplineSkill",
                joinColumns = { @JoinColumn(name = "disciplineId") },
                inverseJoinColumns = { @JoinColumn(name = "skillId") })

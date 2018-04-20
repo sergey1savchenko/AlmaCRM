@@ -12,9 +12,6 @@ public class HousingWorker {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @Column(name="workingTime")
-    private String workingTime;
-
     @ManyToOne
     @JoinColumn(name="userId", nullable=false)
     private User user;
@@ -27,14 +24,6 @@ public class HousingWorker {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getWorkingTime() {
-        return workingTime;
-    }
-
-    public void setWorkingTime(String workingTime) {
-        this.workingTime = workingTime;
     }
 
     public User getUser() {

@@ -23,11 +23,11 @@ public class News {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name="forRole", nullable=false)
+    @JoinColumn(name="forRole", nullable=true)
     private Role role;
 
     @ManyToOne
-    @JoinColumn(name="forFaculty", nullable=false)
+    @JoinColumn(name="forFaculty", nullable=true)
     private Faculty faculty;
 
     @ManyToOne

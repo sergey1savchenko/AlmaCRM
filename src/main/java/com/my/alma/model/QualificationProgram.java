@@ -23,7 +23,7 @@ public class QualificationProgram {
     @JoinColumn(name="agentId", nullable=false)
     private Agent agent;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "qualificationProgramSkill",
             joinColumns = { @JoinColumn(name = "qualificationProgramId") },
             inverseJoinColumns = { @JoinColumn(name = "skillId") })

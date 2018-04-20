@@ -1,0 +1,27 @@
+html, body {
+    height: 100%;
+}
+
+.wrap {
+    height: 100vh;
+    height: 590px !important;
+    display: flex;
+}
+
+main {
+    flex: 1;
+    display: flex;
+}
+
+aside, article {
+    overflow-y: scroll;
+    padding: 5px;
+}
+
+aside {
+    flex: 1;
+}
+
+article {
+    flex: 2;
+}

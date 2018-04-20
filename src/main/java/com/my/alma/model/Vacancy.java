@@ -23,11 +23,11 @@ public class Vacancy {
     @Column(name="endDate")
     private Date endDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="agentId", nullable=false)
     private Agent agent;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "studentsApplied",
             joinColumns = { @JoinColumn(name = "vacancyId") },
             inverseJoinColumns = { @JoinColumn(name = "studentId") })
