@@ -1,5 +1,7 @@
 package com.my.alma.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -11,30 +13,33 @@ public class Discipline {
     @Id
     @Column(name="id")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private int id;
+    private Integer id;
 
     @Column(name="name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="specialtyId", nullable=false)
     private Specialty specialty;
 
-    @OneToMany(mappedBy="discipline")
+    @JsonIgnore
+    @OneToMany(mappedBy="discipline", fetch = FetchType.EAGER)
     private Collection<Clazz> classes;
 
+    @JsonIgnore
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
     @JoinTable(name = "disciplineSkill",
                joinColumns = { @JoinColumn(name = "disciplineId") },
                inverseJoinColumns = { @JoinColumn(name = "skillId") })
     private Collection<Skill> skills;
 
-    @OneToMany(mappedBy="discipline")
+    @JsonIgnore
+    @OneToMany(mappedBy="discipline", fetch = FetchType.EAGER)
     private Collection<Review> reviews;
 
     public Discipline(){}
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

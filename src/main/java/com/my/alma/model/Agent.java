@@ -19,14 +19,14 @@ public class Agent {
     @Column(name="description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="userId", nullable=false)
     private User user;
 
-    @OneToMany(mappedBy="agent")
-    private Collection<QualificationProgram> qualificationprogramsById;
+    @OneToMany(mappedBy="agent", fetch = FetchType.EAGER)
+    private Collection<QualificationProgram> qualificationPrograms;
 
-    @OneToMany(mappedBy="agent")
+    @OneToMany(mappedBy="agent", fetch = FetchType.EAGER)
     private Collection<Vacancy> vacanciesById;
 
     public Agent(){}
@@ -64,11 +64,11 @@ public class Agent {
     }
 
     public Collection<QualificationProgram> getQualificationprogramsById() {
-        return qualificationprogramsById;
+        return qualificationPrograms;
     }
 
-    public void setQualificationprogramsById(Collection<QualificationProgram> qualificationprogramsById) {
-        this.qualificationprogramsById = qualificationprogramsById;
+    public void setQualificationprogramsById(Collection<QualificationProgram> qualificationPrograms) {
+        this.qualificationPrograms = qualificationPrograms;
     }
 
     public Collection<Vacancy> getVacanciesById() {

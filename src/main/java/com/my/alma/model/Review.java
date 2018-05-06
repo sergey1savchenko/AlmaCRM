@@ -1,5 +1,7 @@
 package com.my.alma.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -18,11 +20,16 @@ public class Review {
     @Column(name="weaknesses")
     private String weaknesses;
 
-    @ManyToOne
+    @Column
+    private Integer score;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="studentId", nullable=false)
     private Student student;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="disciplineId", nullable=false)
     private Discipline discipline;
 
@@ -51,6 +58,10 @@ public class Review {
     public void setWeaknesses(String weaknesses) {
         this.weaknesses = weaknesses;
     }
+
+    public Integer getScore() { return score; }
+
+    public void setScore(Integer score) { this.score = score; }
 
     public Student getStudent() {
         return student;

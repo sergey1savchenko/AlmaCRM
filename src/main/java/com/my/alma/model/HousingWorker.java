@@ -12,7 +12,7 @@ public class HousingWorker {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="userId", nullable=false)
     private User user;
 

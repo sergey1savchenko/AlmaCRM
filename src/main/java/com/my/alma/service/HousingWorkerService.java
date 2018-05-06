@@ -17,6 +17,8 @@ public class HousingWorkerService {
     @Autowired
     HousingWorkerRepository housingWorkerRepository;
 
+    public HousingWorker getWorkerByUser(User user) { return housingWorkerRepository.getByUser(user); }
+
     public void save(User tempUser){
         tempUser.setPassword(md5(tempUser.getPassword()));
         userRepository.saveAndFlush(tempUser);

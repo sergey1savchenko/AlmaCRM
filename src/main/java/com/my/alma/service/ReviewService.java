@@ -15,5 +15,6 @@ public class ReviewService {
 
     public List<Review> getReviews() { return reviewRepository.findAllByOrderByIdDesc(); }
 
+    public void add(Review review) { reviewRepository.saveAndFlush(review); }
 
 }

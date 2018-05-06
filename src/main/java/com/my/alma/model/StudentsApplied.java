@@ -14,20 +14,17 @@ public class StudentsApplied {
     private int id;
 
     @Column(name="resume")
-    private byte[] resume;
+    private String resume;
 
-    @Column(name="fileExtension")
-    private String fileExtension;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="studentId", nullable=false)
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="vacancyId", nullable=false)
     private Vacancy vacancy;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="statusId", nullable=false)
     private Status status;
 
@@ -41,20 +38,12 @@ public class StudentsApplied {
         this.id = id;
     }
 
-    public byte[] getResume() {
+    public String getResume() {
         return resume;
     }
 
-    public void setResume(byte[] resume) {
+    public void setResume(String resume) {
         this.resume = resume;
-    }
-
-    public String getFileExtension() {
-        return fileExtension;
-    }
-
-    public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
     }
 
     public Student getStudent() {

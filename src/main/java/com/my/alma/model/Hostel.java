@@ -16,8 +16,11 @@ public class Hostel {
     @Column(name="address")
     private String address;
 
-    @OneToMany(mappedBy = "hostel")
+    @OneToMany(mappedBy = "hostel", fetch = FetchType.EAGER)
     private Collection<Room> rooms;
+
+    @Transient
+    private Integer free;
 
     public Hostel(){}
 
@@ -44,4 +47,8 @@ public class Hostel {
     public void setRooms(Collection<Room> rooms) {
         this.rooms = rooms;
     }
+
+    public Integer getFree() { return free; }
+
+    public void setFree(Integer free) { this.free = free; }
 }

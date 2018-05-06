@@ -10,4 +10,5 @@ import java.util.List;
 public interface ApplicantsApplicationRepository extends JpaRepository<ApplicantsApplication, Integer> {
 
     List<ApplicantsApplication> findAllByOrderByIdDesc();
+
 }

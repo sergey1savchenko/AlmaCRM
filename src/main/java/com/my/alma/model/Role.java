@@ -1,5 +1,7 @@
 package com.my.alma.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -9,16 +11,18 @@ public class Role {
 
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
     @Column(name="role")
     private String role;
 
-    @OneToMany(mappedBy="role")
+    @JsonIgnore
+    @OneToMany(mappedBy="role", fetch = FetchType.EAGER)
     private Collection<User> users;
 
-    @OneToMany(mappedBy="role")
+    @JsonIgnore
+    @OneToMany(mappedBy="role", fetch = FetchType.EAGER)
     private Collection<News> news;
 
     public Role(){}

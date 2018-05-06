@@ -19,7 +19,7 @@ public class QualificationProgram {
     @Column(name="description")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="agentId", nullable=false)
     private Agent agent;
 

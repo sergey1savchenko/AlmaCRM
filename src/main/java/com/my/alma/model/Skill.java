@@ -1,5 +1,7 @@
 package com.my.alma.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -19,9 +21,11 @@ public class Skill {
     @Column(name="description")
     private String description;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
     private Collection<Discipline> disciplines;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "skills", fetch = FetchType.EAGER)
     private Collection<QualificationProgram> qualificationPrograms;
 

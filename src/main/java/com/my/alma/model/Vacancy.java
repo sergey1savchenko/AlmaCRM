@@ -33,6 +33,9 @@ public class Vacancy {
             inverseJoinColumns = { @JoinColumn(name = "studentId") })
     private Collection<Student> students;
 
+    @Column(name="facultyId")
+    private Integer facultyId;
+
     public Vacancy(){}
 
     public int getId() {
@@ -82,4 +85,8 @@ public class Vacancy {
     public void setStudents(Collection<Student> students) {
         this.students = students;
     }
+
+    public Integer getFacultyId() { return facultyId; }
+
+    public void setFacultyId(Integer facultyId) { this.facultyId = facultyId; }
 }

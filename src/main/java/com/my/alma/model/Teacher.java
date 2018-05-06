@@ -16,11 +16,11 @@ public class Teacher {
     @Column(name="hoursForConsultations")
     private String hoursForConsultations;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="facultyId", nullable=false)
     private Faculty faculty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="userId", nullable=false)
     private User user;
 

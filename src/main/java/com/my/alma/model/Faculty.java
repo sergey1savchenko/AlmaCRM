@@ -1,5 +1,7 @@
 package com.my.alma.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.Collection;
 
@@ -15,13 +17,15 @@ public class Faculty {
     @Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy="faculty")
+    @OneToMany(mappedBy="faculty", fetch = FetchType.EAGER)
     private Collection<Student> students;
 
-    @OneToMany(mappedBy="faculty")
+    @JsonIgnore
+    @OneToMany(mappedBy="faculty", fetch = FetchType.EAGER)
     private Collection<ApplicantsApplication> applicantsApplications;
 
-    @OneToMany(mappedBy="faculty")
+    @JsonIgnore
+    @OneToMany(mappedBy="faculty", fetch = FetchType.EAGER)
     private Collection<News> news;
 
     public Faculty(){}

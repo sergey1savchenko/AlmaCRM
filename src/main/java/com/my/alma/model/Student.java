@@ -1,8 +1,11 @@
 package com.my.alma.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -26,27 +29,35 @@ public class Student {
     @Column(name="course")
     private int course;
 
-    @ManyToOne
+    @Transient
+    private String skillsAsString;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="facultyId", nullable=false)
     private Faculty faculty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="userId", nullable=false)
     private User user;
 
-    @OneToMany(mappedBy="student")
+    @JsonIgnore
+    @OneToMany(mappedBy="student", fetch = FetchType.EAGER)
     private Collection<Grade> grades;
 
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinTable(name = "studentRoom",
             joinColumns = { @JoinColumn(name = "studentId") },
             inverseJoinColumns = { @JoinColumn(name = "roomId") })
     private Room room;
 
-    @OneToMany(mappedBy="student")
+    @JsonIgnore
+    @OneToMany(mappedBy="student", fetch = FetchType.EAGER)
     private Collection<RoomChangeApp> roomChangeApps;
 
-    @OneToMany(mappedBy="student")
+    @JsonIgnore
+    @OneToMany(mappedBy="student", fetch = FetchType.EAGER)
     private Collection<Review> reviews;
 
     public Student(){}
@@ -135,7 +146,17 @@ public class Student {
         return reviews;
     }
 
+    public HashSet<Review> getSetOfReviews() { return new HashSet<Review>(this.reviews); }
+
     public void setReviews(Collection<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public String getSkillsAsString() {
+        return skillsAsString;
+    }
+
+    public void setSkillsAsString(String skillsAsString) {
+        this.skillsAsString = skillsAsString;
     }
 }

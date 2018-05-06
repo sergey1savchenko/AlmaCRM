@@ -3,6 +3,7 @@ package com.my.alma.model;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 
 @Entity
@@ -14,11 +15,11 @@ public class Clazz {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="disciplineId", nullable=false)
     private Discipline discipline;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="classTypeId", nullable=false)
     private ClassType classType;
 
@@ -28,7 +29,7 @@ public class Clazz {
     @Column(name="date")
     private Date date;
 
-    @OneToMany(mappedBy="clazz")
+    @OneToMany(mappedBy="clazz", fetch = FetchType.EAGER)
     private Collection<Grade> grades;
 
     public Clazz(){}
@@ -76,6 +77,8 @@ public class Clazz {
     public Collection<Grade> getGrades() {
         return grades;
     }
+
+    public HashSet<Grade> getDistGrades() { return new HashSet<Grade>(this.grades); }
 
     public void setGrades(Collection<Grade> grades) {
         this.grades = grades;

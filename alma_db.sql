@@ -176,6 +176,7 @@ CREATE TABLE IF NOT EXISTS `Review` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
   `strnghts` TEXT NOT NULL,
   `weaknesses` TEXT NOT NULL,
+  `score` INT(11) NOT NULL,
   `studentId` INT(11) NOT NULL,
   `disciplineId` INT(11) NOT NULL,
   FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
@@ -211,8 +212,8 @@ CREATE TABLE IF NOT EXISTS `Class` (
 
 CREATE TABLE IF NOT EXISTS `Grade` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `presence` TINYINT(1) NOT NULL,
-  `mark` INT(11) NOT NULL,
+  `presence` TINYINT(1) NULL,
+  `mark` INT(11) NULL,
   `studentId` INT(11) NOT NULL,
   `classId` INT(11) NOT NULL,
   FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
@@ -287,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `QualificationProgram` (
 
 CREATE TABLE IF NOT EXISTS `QualificationProgramSkill` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `qualificationProgramId` INT(11) NOT NULL UNIQUE,
+  `qualificationProgramId` INT(11) NOT NULL,
   `skillId` INT(11) NOT NULL,
   FOREIGN KEY (`qualificationProgramId`) REFERENCES `QualificationProgram`(`id`)
     ON UPDATE CASCADE
@@ -306,7 +307,11 @@ CREATE TABLE IF NOT EXISTS `Vacancy` (
   `description` TEXT NOT NULL,
   `endDate` DATE NOT NULL,
   `agentId` INT(11) NOT NULL,
+  `facultyId` INT(11) NOT NULL,
   FOREIGN KEY (`agentId`) REFERENCES `Agent`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`facultyId`) REFERENCES `Faculty`(`id`)
     ON UPDATE CASCADE
     ON DELETE RESTRICT,
   PRIMARY KEY (`id`)
@@ -321,8 +326,7 @@ INSERT INTO `Status` (`id`, `status`) VALUES (1, 'NEW'), (2, 'archived');
 
 CREATE TABLE IF NOT EXISTS `StudentsApplied` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
-  `resume` MEDIUMBLOB,
-  `fileExtension` VARCHAR(256),
+  `resume` VARCHAR(256) NOT NULL,
   `studentId` INT(11) NOT NULL,
   `vacancyId` INT(11) NOT NULL,
   `statusId` INT(11) NOT NULL,
@@ -343,10 +347,14 @@ CREATE TABLE IF NOT EXISTS `QuestionFromStudent` (
   `text` TEXT NOT NULL,
   `studentId` INT(11) NOT NULL,
   `statusId` INT(11) NOT NULL,
+  `agentId` INT(11) NOT NULL,
   FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
     ON UPDATE CASCADE
     ON DELETE RESTRICT,
   FOREIGN KEY (`statusId`) REFERENCES `Status`(`id`)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`agentId`) REFERENCES `Agent`(`id`)
     ON UPDATE CASCADE
     ON DELETE RESTRICT,
   PRIMARY KEY (`id`)
@@ -382,19 +390,15 @@ CREATE TABLE IF NOT EXISTS `StudentRoom` (
     ON DELETE RESTRICT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE studentroom
-  ADD CONSTRAINT studentroomCon UNIQUE(studentId, roomId);
+ALTER TABLE studentroom ADD CONSTRAINT studentroomCon UNIQUE(studentId, roomId);
 
 CREATE TABLE IF NOT EXISTS `RoomChangeApp` (
   `id` INT(11) AUTO_INCREMENT NOT NULL,
   `info` TEXT NOT NULL,
   `studentId` INT(11) NOT NULL,
-  `wantedRoomId` INT(11) NOT NULL,
+  `wanted` VARCHAR(256) NOT NULL,
   `statusId` INT(11) NOT NULL,
   FOREIGN KEY (`studentId`) REFERENCES `Student`(`id`)
-    ON UPDATE CASCADE
-    ON DELETE RESTRICT,
-  FOREIGN KEY (`wantedRoomId`) REFERENCES `Room`(`id`)
     ON UPDATE CASCADE
     ON DELETE RESTRICT,
   FOREIGN KEY (`statusId`) REFERENCES `Status`(`id`)

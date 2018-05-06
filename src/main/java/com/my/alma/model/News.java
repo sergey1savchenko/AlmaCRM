@@ -22,15 +22,15 @@ public class News {
     @Column(name="date")
     private Date date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="forRole", nullable=true)
     private Role role;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="forFaculty", nullable=true)
     private Faculty faculty;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="postedBy", nullable=false)
     private User author;
 

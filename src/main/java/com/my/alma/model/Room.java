@@ -22,14 +22,11 @@ public class Room {
     @Column(name="sex")
     private byte sex;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="hostelId", nullable=false)
     private Hostel hostel;
 
-    @OneToMany(mappedBy="room")
-    private Collection<RoomChangeApp> roomChangeApps;
-
-    @OneToMany(mappedBy="room")
+    @OneToMany(mappedBy="room", fetch = FetchType.EAGER)
     private Collection<Student> students;
 
     public Room(){}
@@ -74,19 +71,18 @@ public class Room {
         this.hostel = hostel;
     }
 
-    public Collection<RoomChangeApp> getRoomChangeApps() {
-        return roomChangeApps;
-    }
-
-    public void setRoomChangeApps(Collection<RoomChangeApp> roomChangeApps) {
-        this.roomChangeApps = roomChangeApps;
-    }
-
     public Collection<Student> getStudents() {
         return students;
     }
 
     public void setStudents(Collection<Student> students) {
         this.students = students;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder("");
+        sb.append(this.hostel.getAddress()+", room: "+this.number+", size: "+this.size);
+        return sb.toString();
     }
 }

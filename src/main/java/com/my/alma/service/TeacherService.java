@@ -30,6 +30,8 @@ public class TeacherService {
         teacherRepository.saveAndFlush(teacher);
     }
 
+    public Teacher getTeacherByUser(User user) { return teacherRepository.getByUser(user); }
+
     public List<Teacher> allTeachers(){return teacherRepository.findAll(); }
 
     public List<Discipline> getDisciplinesByTeacherId(Integer teacherId){
@@ -46,7 +48,5 @@ public class TeacherService {
     public void setDiscipline(Integer teacherId, Integer disciplineId){
         teacherRepository.addTeacherToDiscipline(teacherId, disciplineId);
     }
-
-    public Teacher getTeacherByUser(User user) { return teacherRepository.getByUser(user); }
 
 }

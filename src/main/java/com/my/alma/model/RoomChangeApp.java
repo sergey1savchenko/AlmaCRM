@@ -15,17 +15,16 @@ public class RoomChangeApp {
     @Column(name="info")
     private String info;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="studentId", nullable=false)
     private Student student;
 
-    @ManyToOne
-    @JoinColumn(name="wantedRoomId", nullable=false)
-    private Room room;
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="statusId", nullable=false)
     private Status status;
+
+    @JoinColumn(name="wanted", nullable=false)
+    private String wanted;
 
     public RoomChangeApp(){}
 
@@ -53,14 +52,6 @@ public class RoomChangeApp {
         this.student = student;
     }
 
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
     public Status getStatus() {
         return status;
     }
@@ -68,4 +59,9 @@ public class RoomChangeApp {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public String getWanted() { return wanted; }
+
+    public void setWanted(String wanted) { this.wanted = wanted; }
+
 }

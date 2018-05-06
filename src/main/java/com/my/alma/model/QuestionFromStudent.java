@@ -15,13 +15,17 @@ public class QuestionFromStudent {
     @Column(name="text")
     private String text;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="studentId", nullable=false)
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="statusId", nullable=false)
     private Status status;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="agentId", nullable=false)
+    private Agent agent;
 
     public QuestionFromStudent(){}
 
@@ -56,4 +60,9 @@ public class QuestionFromStudent {
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public Agent getAgent() { return agent; }
+
+    public void setAgent(Agent agent) { this.agent = agent; }
+
 }

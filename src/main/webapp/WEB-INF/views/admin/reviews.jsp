@@ -14,6 +14,7 @@
                             <p>${rev.strnghts}</p>
                             <p>Bad points: </p>
                             <p>${rev.weaknesses}</p>
+                            <p>Total grade: ${rev.score}</p>
                             <hr style="border-color: black !important;"/>
                         </c:forEach>
                     </div>

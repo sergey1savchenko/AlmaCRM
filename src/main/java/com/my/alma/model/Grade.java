@@ -12,17 +12,17 @@ public class Grade {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private int id;
 
-    @Column(name="presence")
-    private byte presence;
+    @Column(name="presence", nullable = true)
+    private Byte presence;
 
-    @Column(name="mark")
-    private int mark;
+    @Column(name="mark", nullable = true)
+    private Integer mark;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="studentId", nullable=false)
     private Student student;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="classId", nullable=false)
     private Clazz clazz;
 

@@ -41,7 +41,6 @@
 </head>
 <body>
 
-
 <!-- HEADER -->
 <nav class="navbar navbar-inverse" style="border-radius: 0 !important; background-color: darkblue !important;">
     <div class="container-fluid">
@@ -59,6 +58,24 @@
                 <li><a href="<c:url value="/teacher/main"/>" style="color:white;">Teacher page</a></li>
                 <li><a data-toggle="modal" data-target="#addSkillModal" style="color:white;">Add new skill</a></li>
             </sec:authorize>
+            <!-- STUDENT menu -->
+            <sec:authorize access="hasRole('STUDENT')">
+                <li><a href="<c:url value="/student/main"/>" style="color:white;">Student page</a></li>
+                <li><a href="<c:url value="/student/feedback"/>" style="color:white;">Feedbacks & Housing Fund</a></li>
+                <li><a href="<c:url value="/student/career"/>" style="color:white;">My Career</a></li>
+                <li><a href="<c:url value="/student/questions"/>" style="color:white;">Ask a question to a company agent</a></li>
+            </sec:authorize>
+            <!-- AGENT menu -->
+            <sec:authorize access="hasRole('AGENT')">
+                <li><a href="<c:url value="/agent/main"/>" style="color:white;">Agent page</a></li>
+                <li><a href="<c:url value="/agent/vacancies"/>" style="color:white;">Vacancies</a></li>
+                <li><a href="<c:url value="/agent/programs"/>" style="color:white;">Skills and Programs</a></li>
+                <li><a data-toggle="modal" data-target="#addSkillModal" style="color:white;">Add new skill</a></li>
+            </sec:authorize>
+            <!-- TEACHER menu -->
+            <sec:authorize access="hasRole('WORKER')">
+                <li><a href="<c:url value="/worker/main"/>" style="color:white;">Main page</a></li>
+            </sec:authorize>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a data-toggle="modal" data-target="#bug" style="color:white;"><span class="fa fa-bug"></span> Report a bug</a></li>
@@ -72,8 +89,7 @@
     </div>
 </nav>
 
-
-
+<!-- MODALS -->
 <div class="modal fade" id="bug" tabindex="-1" role="dialog" aria-labelledby="modalBug">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -156,7 +172,7 @@
             timeout: 30000
         }).done(function (data) {
             document.getElementById("bugSendSuccess").style.display = "";
-            setTimeout(redirect, 1000);
+            setTimeout(redirect, 1500);
             function redirect() { document.location.href = domainURL; }
         }).fail(function (error) {
             alert("Network connection error...");
@@ -177,9 +193,7 @@
             data: { skillName: skillName , skillDesc: skillDesc},
             timeout: 30000
         }).done(function (data) {
-            document.getElementById("bugSendSuccess").style.display = "";
-            setTimeout(redirect, 1000);
-            function redirect() { document.location.href = domainURL; }
+            location.reload();
         }).fail(function (error) {
             alert("Network connection error...");
             setTimeout(redirect, 500);
