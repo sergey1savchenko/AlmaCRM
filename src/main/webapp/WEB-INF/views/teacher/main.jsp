@@ -379,6 +379,7 @@
                 alert("Connection error...");
             });
         }
+        loadDataShowModal(discipline);
     }
 </script>
 

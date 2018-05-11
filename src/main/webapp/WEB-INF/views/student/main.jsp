@@ -66,7 +66,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-5">
         <h3>My Disciplines </h3>
         <hr style="border-color: lightblue !important;"/>
         <table id="disciplinesTable" class="table table-striped table-hover table-bordered" class="width-100p">

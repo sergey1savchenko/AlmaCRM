@@ -214,8 +214,7 @@
         }).done(function (data) {
             newProgramId = data;
         }).fail(function (error) {
-            alert("Connection error...");
-            location.reload();
+
         });
 
         //alert(newProgramId);
@@ -230,8 +229,7 @@
                 timeout: 30000
             }).done(function (data) {
             }).fail(function (error) {
-                alert("Connection error...");
-                location.reload();
+
             });
         });
     }

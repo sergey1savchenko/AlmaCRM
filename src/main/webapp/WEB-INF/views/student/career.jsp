@@ -31,7 +31,7 @@
                                         <p>${v.endDate}</p>
                                     </td>
                                     <td>
-                                        <p>${v.agent.company} (${v.agent.description})</p>
+                                        <p>${v.agent.company}</p>
                                     </td>
                                     <td>
                                         <c:choose>
@@ -75,7 +75,7 @@
                                         <p>${q.description}</p>
                                     </td>
                                     <td>
-                                        <p>${q.agent.company} (${q.agent.description})</p>
+                                        <p>${q.agent.company}</p>
                                     </td>
                                     <td>
                                         <c:forEach items="${q.skills}" var="s">

@@ -68,7 +68,7 @@
         <div class="panel-body">
             <div class="wrap">
                 <main>
-                    <div class="col-md-3" style="padding: 5px !important;">
+                    <div class="col-md-3" style="padding: 15px !important;">
                         <h3>Add news</h3>
                         <hr style="border-color: lightblue !important;"/>
                         <form onsubmit="addNews();">
@@ -79,7 +79,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="newsText">Text</label>
-                                    <textarea rows="8" cols="49" id="newsText" required></textarea>
+                                    <textarea rows="8" cols="45" id="newsText" required></textarea>
                                 </div>
                                 <div class="form-group">
                                     Faculty:

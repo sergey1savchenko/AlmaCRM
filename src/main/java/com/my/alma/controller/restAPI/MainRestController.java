@@ -107,6 +107,7 @@ public class MainRestController {
     public String addNewFaculty(@RequestParam(value = "name", required = true) String name) {
         Faculty faculty = new Faculty();
         faculty.setName(name);
+        System.out.println(name);
         facultyService.save(faculty);
         return "success";
     }
@@ -195,8 +196,10 @@ public class MainRestController {
             forRole = roleRepository.findOne(newsRoleId);
         }
         // as agents and housing workers are not connected with faculties
-        if(forRole.getRole().equalsIgnoreCase("agent") || forRole.getRole().equalsIgnoreCase("worker")){
-            faculty = null;
+        if(forRole != null) {
+            if (forRole.getRole().equalsIgnoreCase("agent") || forRole.getRole().equalsIgnoreCase("worker")) {
+                faculty = null;
+            }
         }
         News news = new News();
         news.setAuthor(curUser);

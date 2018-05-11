@@ -16,6 +16,12 @@ public class NewsService{
     NewsRepository newsRepository;
 
     public List<News> findByFacultyAndRole(Faculty faculty, Role role) {
+        if (role != null){
+            if (role.getRole().equalsIgnoreCase("admin")) {
+                role = null;
+                faculty = null;
+            }
+        }
         return newsRepository.findByFacultyAndRoleOrderByDateDesc(faculty, role);
     }
 

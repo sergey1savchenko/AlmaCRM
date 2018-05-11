@@ -4,7 +4,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xsi:schemaLocation=
-	"http://www.springframework.org/schema/security 
+	"http://www.springframework.org/schema/security
 	http://www.springframework.org/schema/security/spring-security.xsd
 	http://www.springframework.org/schema/context 
 	http://www.springframework.org/schema/context/spring-context-4.3.xsd
@@ -18,7 +18,13 @@
 		<intercept-url pattern="/login" access="isAnonymous()" />
 		<intercept-url pattern="/home" access="permitAll" />
 		<intercept-url pattern="/admin/**" access="hasRole('ADMIN')" />
-		<intercept-url pattern="/user/**" access="hasRole('USER')" />
+		<intercept-url pattern="/student/**" access="hasRole('STUDENT')" />
+		<intercept-url pattern="/teacher/**" access="hasRole('TEACHER')" />
+		<intercept-url pattern="/agent/**" access="hasRole('AGENT')" />
+		<intercept-url pattern="/worker/**" access="hasRole('WORKER')" />
+
+		<access-denied-handler error-page="/403" />
+
 			
 		<form-login login-page='/login' login-processing-url="/j_spring_security_check"
 			default-target-url="/home" always-use-default-target="false"
@@ -29,7 +35,6 @@
 		<logout logout-url="/logout" logout-success-url="/login?logout"
 			delete-cookies="JSESSIONID" invalidate-session="true" />
 
-	
 	</http>
 
 	<authentication-manager>
@@ -37,6 +42,5 @@
 			<password-encoder hash="md5"/>
 		</authentication-provider>
 	</authentication-manager>
-	
-	
+
 </beans:beans>

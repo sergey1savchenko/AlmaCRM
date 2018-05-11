@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%request.setCharacterEncoding("UTF-8");%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -7,8 +8,9 @@
 <html>
 <head>
     <title>AlmaCRM</title>
+    <meta charset=UTF-8>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="AlmaCRM is a Customer Relationship Management system specially designed for use in universities" />
     <meta name="keywords" content="CRM, Customer Relationship Management, AlmaCRM, university" />
     <!-- jQuery -->
@@ -157,47 +159,4 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    function reportBug() {
-        var problem = $("#problem").val();
-        var authorName = $("#yourName").val();
-        var email = $("#yourEmail").val();
-
-        $.ajax({
-            type: "POST",
-            url: domainURL + "reportBug",
-            dataType: "text",
-            async: false,
-            data: { problem: problem , authorName: authorName, email: email},
-            timeout: 30000
-        }).done(function (data) {
-            document.getElementById("bugSendSuccess").style.display = "";
-            setTimeout(redirect, 1500);
-            function redirect() { document.location.href = domainURL; }
-        }).fail(function (error) {
-            alert("Network connection error...");
-            setTimeout(redirect, 500);
-            function redirect() { document.location.href = domainURL; }
-        });
-    }
-
-    function addSkill() {
-        var skillName = $("#skillName").val();
-        var skillDesc = $("#skillDesc").val();
-
-        $.ajax({
-            type: "POST",
-            url: domainURL + "addSkill",
-            dataType: "text",
-            async: false,
-            data: { skillName: skillName , skillDesc: skillDesc},
-            timeout: 30000
-        }).done(function (data) {
-            location.reload();
-        }).fail(function (error) {
-            alert("Network connection error...");
-            setTimeout(redirect, 500);
-            function redirect() { document.location.href = domainURL; }
-        });
-    }
-</script>
+<script type="text/javascript" src="<c:url value="/resources/js/pages/main.js"/>"></script>

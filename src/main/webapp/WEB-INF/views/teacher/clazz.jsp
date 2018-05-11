@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-md-11">
+                        <div class="col-md-12">
                             <h3>Grades </h3>
                             <hr style="border-color: lightblue !important;"/>
                             <div class="panel panel-default">
